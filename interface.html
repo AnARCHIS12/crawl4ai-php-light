@@ -385,6 +385,59 @@ main {
   white-space: pre-wrap;
   word-break: break-word;
 }
+.msg-ai .msg-content {
+  white-space: normal;
+}
+.msg-content h3,
+.msg-content h4 {
+  font-family: 'Orbitron', monospace;
+  color: var(--ink);
+  line-height: 1.35;
+  margin: 16px 0 8px;
+  letter-spacing: 0.04em;
+}
+.msg-content h3 {
+  font-size: 0.92rem;
+}
+.msg-content h4 {
+  font-size: 0.78rem;
+}
+.msg-content p {
+  margin: 0 0 10px;
+}
+.msg-content p:last-child {
+  margin-bottom: 0;
+}
+.msg-content ul,
+.msg-content ol {
+  margin: 8px 0 12px 20px;
+  padding: 0;
+}
+.msg-content li {
+  margin: 5px 0;
+  padding-left: 2px;
+}
+.msg-content strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+.msg-content code {
+  padding: 1px 5px;
+  border: 1px solid var(--grid);
+  border-radius: 5px;
+  background: rgba(229,9,20,0.08);
+  color: var(--accent2);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.82em;
+}
+.msg-content a {
+  color: var(--accent2);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,59,48,0.45);
+}
+.msg-content a:hover {
+  color: var(--accent);
+}
 .msg-citations {
   margin-top: 12px;
 }
@@ -1212,7 +1265,7 @@ function addMessage(role, text, citations = [], record = true) {
   div.className = 'msg msg-' + role;
   div.innerHTML = `
     <div class="msg-label">${role === 'user' ? 'VOUS' : 'AI ANALYST'}</div>
-    <div class="msg-content">${escHtml(text)}</div>
+    <div class="msg-content">${role === 'ai' ? renderMarkdown(text) : escHtml(text)}</div>
   `;
   if (role === 'ai') {
     const citationWrap = document.createElement('div');
@@ -1241,6 +1294,86 @@ function addThinking() {
 
 function escHtml(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+function escInline(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderInlineMarkdown(text) {
+  let html = escInline(text);
+  html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+  return html;
+}
+
+function renderMarkdown(text) {
+  const lines = String(text || '').replace(/\r\n/g, '\n').split('\n');
+  const html = [];
+  let listType = null;
+  let paragraph = [];
+
+  const closeList = () => {
+    if (listType) {
+      html.push(`</${listType}>`);
+      listType = null;
+    }
+  };
+  const flushParagraph = () => {
+    if (paragraph.length) {
+      html.push(`<p>${renderInlineMarkdown(paragraph.join(' '))}</p>`);
+      paragraph = [];
+    }
+  };
+  const openList = (type) => {
+    flushParagraph();
+    if (listType !== type) {
+      closeList();
+      html.push(`<${type}>`);
+      listType = type;
+    }
+  };
+
+  lines.forEach(rawLine => {
+    const line = rawLine.trim();
+    if (!line) {
+      flushParagraph();
+      closeList();
+      return;
+    }
+
+    const heading = line.match(/^(#{1,4})\s+(.+)$/);
+    if (heading) {
+      flushParagraph();
+      closeList();
+      const level = heading[1].length >= 3 ? 3 : 4;
+      html.push(`<h${level}>${renderInlineMarkdown(heading[2])}</h${level}>`);
+      return;
+    }
+
+    const bullet = line.match(/^[-*]\s+(.+)$/);
+    if (bullet) {
+      openList('ul');
+      html.push(`<li>${renderInlineMarkdown(bullet[1])}</li>`);
+      return;
+    }
+
+    const numbered = line.match(/^\d+\.\s+(.+)$/);
+    if (numbered) {
+      openList('ol');
+      html.push(`<li>${renderInlineMarkdown(numbered[1])}</li>`);
+      return;
+    }
+
+    closeList();
+    paragraph.push(line);
+  });
+
+  flushParagraph();
+  closeList();
+  return html.join('');
 }
 
 function renderAnalysis(data) {
