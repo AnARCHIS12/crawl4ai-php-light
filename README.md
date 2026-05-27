@@ -1,33 +1,14 @@
 # LITECLAW v2 — AI Web Intelligence Loop
 
-## Déploiement Hostinger
+## 📋 Table des Matières
 
-### Fichiers à uploader dans public_html/liteclaw/ (ou sous-dossier choisi)
-
-```
-index.php       ← Backend PHP + router AJAX
-interface.html  ← Frontend (servi par index.php)
-.htaccess       ← Config Apache / LiteSpeed
-```
-
-Le dossier `data/` est créé automatiquement au premier appel (SQLite + logs).
-
-### Vérification permissions après upload
-```
-data/          → 0755
-data/*.sqlite  → 0644
-data/error.log → 0644 (créé auto)
-```
-
-### Architecture
-- `index.php` sert le HTML ET gère les requêtes AJAX (`action=scrape`, `action=ask`)
-- Tout en **cURL** (jamais file_get_contents sur URL externe)
-- SQLite pour persister les sessions de conversation
-- Rotation automatique des 3 clés Mistral
-- Modèle scrape : `mistral-small-2603` (rapide)
-- Modèle chat :  `mistral-medium-2505` (plus précis pour les réponses)
-
-### Flux utilisateur
-1. Saisir une URL → cURL scrape → nettoyage HTML → Mistral analyse + génère 5 questions
-2. Clic sur une question → Mistral répond avec contexte → génère 4 nouvelles questions
-3. Boucle infinie jusqu'à 10 tours (mémoire tronquée automatiquement)
+1. [But du Site](#-but-du-site)
+2. [Détail des Prompts](#-détail-des-prompts)
+3. [Mode Boucle : Questions Générées par IA](#-mode-boucle-questions-générées-par-ia)
+4. [Méthode de Crawl](#-méthode-de-crawl)
+5. [Obtenir une API Key Mistral (Free Tier)](#-obtenir-une-api-key-mistral-free-tier)
+6. [Mode dEmploi](#-mode-demploi)
+7. [Cas dUsage](#-cas-dusage)
+8. [12 Modifications dOptimisation Possibles](#-12-modifications-doptimisation-possibles)
+9. [Transformer le Code pour lAnalyse SEO](#-transformer-le-code-pour-lanalyse-seo)
+10. [12 Cas Pratiques de Transformation](#-12-cas-pratiques-de-transformation)
