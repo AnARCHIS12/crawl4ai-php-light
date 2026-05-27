@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LITECLAW v2 — AI Web Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:   #ffffff;
+  --off:     #f4f6fa;
+  --grid:    #e8ecf4;
+  --ink:     #0a0e1a;
+  --ink2:    #1e2540;
+  --muted:   #7a859e;
+  --accent:  #0066ff;
+  --accent2: #00d4ff;
+  --accent3: #6600ff;
+  --ok:      #00c896;
+  --warn:    #ff4444;
+  --border:  rgba(0,102,255,0.18);
+  --glow:    0 0 30px rgba(0,102,255,0.12);
+  --shadow:  0 4px 32px rgba(10,14,26,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BG grid ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,102,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,102,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.logo {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 1.3rem;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+  display: flex; align-items: center; gap: 10px;
+}
+.logo .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.4)} }
+
+.header-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── MAIN LAYOUT ── */
+main {
+  position: relative; z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ── PANEL ── */
+.panel {
+  background: var(--white);
+  border: 1px solid var(--grid);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.panel-head {
+  padding: 20px 28px 16px;
+  border-bottom: 1px solid var(--grid);
+  display: flex; align-items: center; gap: 12px;
+}
+.panel-head .icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.panel-head h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink2);
+}
+.panel-head .sub {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+.panel-body { padding: 24px 28px; }
+
+/* ── INPUT GROUP ── */
+.input-row {
+  display: flex; gap: 10px;
+  position: relative;
+}
+.input-row input[type=url] {
+  flex: 1;
+  height: 48px;
+  padding: 0 48px 0 18px;
+  border: 1.5px solid var(--grid);
+  border-radius: 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--ink);
+  background: var(--off);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.input-row input[type=url]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,102,255,0.1);
+  background: var(--white);
+}
+
+/* ── BUTTONS ── */
+.btn {
+  height: 48px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  color: var(--white);
+  box-shadow: 0 4px 20px rgba(0,102,255,0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,102,255,0.4); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.45; pointer-events: none; }
+
+/* ── STATUS BAR ── */
+#statusBar {
+  margin-top: 14px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--grid);
+  overflow: hidden;
+  display: none;
+}
+#statusBar.active { display: block; }
+#statusBar .bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.4s;
+  border-radius: 2px;
+  animation: barPulse 1.2s ease-in-out infinite;
+}
+@keyframes barPulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+/* ── RESULT AREA ── */
+#resultZone { margin-top: 28px; display: none; }
+
+.result-card {
+  background: var(--white);
+  border: 1px solid var(--grid);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  animation: slideUp 0.35s ease;
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+.result-header {
+  padding: 16px 24px;
+  background: linear-gradient(135deg, rgba(0,102,255,0.04), rgba(0,212,255,0.04));
+  border-bottom: 1px solid var(--grid);
+  display: flex; align-items: center; gap: 10px;
+}
+.url-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  background: rgba(0,102,255,0.07);
+  padding: 4px 12px;
+  border-radius: 6px;
+  word-break: break-all;
+}
+
+/* Topics */
+.topics { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0; }
+.topic-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent3);
+  background: rgba(102,0,255,0.07);
+  border: 1px solid rgba(102,0,255,0.15);
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+/* Summary */
+.summary-text {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--ink2);
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--grid);
+}
+
+/* ── CHAT THREAD ── */
+#chatThread {
+  padding: 0;
+}
+.msg {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--grid);
+  animation: slideUp 0.25s ease;
+}
+.msg-user {
+  background: rgba(0,102,255,0.03);
+}
+.msg-ai {
+  background: var(--white);
+}
+.msg-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.msg-user .msg-label { color: var(--accent); }
+.msg-ai   .msg-label { color: var(--ok); }
+.msg-label::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+.msg-user .msg-label::before { background: var(--accent); }
+.msg-ai   .msg-label::before { background: var(--ok); }
+
+.msg-content {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--ink2);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── QUESTION BUTTONS ── */
+.q-zone {
+  padding: 18px 24px 20px;
+  background: linear-gradient(180deg, rgba(0,102,255,0.02), var(--off));
+  border-top: 1px solid var(--grid);
+}
+.q-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 6px;
+}
+.q-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--grid);
+}
+
+.q-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+
+.q-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--ink2);
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.45;
+  transition: all 0.18s;
+  position: relative;
+  overflow: hidden;
+}
+.q-btn::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.q-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 4px 16px rgba(0,102,255,0.1);
+  transform: translateY(-2px);
+}
+.q-btn:hover::before { opacity: 1; }
+.q-btn:active { transform: translateY(0); }
+.q-btn:disabled { opacity: 0.4; pointer-events: none; }
+
+/* ── THINKING INDICATOR ── */
+.thinking {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px 24px;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  border-bottom: 1px solid var(--grid);
+}
+.thinking-dots { display: flex; gap: 5px; }
+.thinking-dots span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: dotBounce 1.2s ease-in-out infinite;
+}
+.thinking-dots span:nth-child(2){ animation-delay: 0.2s; }
+.thinking-dots span:nth-child(3){ animation-delay: 0.4s; }
+@keyframes dotBounce { 0%,80%,100%{transform:scale(0.8);opacity:0.5} 40%{transform:scale(1.2);opacity:1} }
+
+/* ── ERROR/TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  background: var(--ink);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  border-left: 3px solid var(--warn);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  animation: slideUp 0.3s ease;
+  max-width: 360px;
+}
+
+/* ── SCAN LINES effect on result ── */
+.result-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+  animation: scanLine 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+.result-card { position: relative; }
+@keyframes scanLine { 0%{opacity:0;transform:scaleX(0)} 50%{opacity:1;transform:scaleX(1)} 100%{opacity:0;transform:scaleX(0)} }
+
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  padding: 0 0 48px;
+}
+.hero-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.hero-title span {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 0.9rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  font-weight: 300;
+}
+
+/* ── CORNER DECORATIONS ── */
+.corner-tl, .corner-br {
+  position: absolute;
+  width: 16px; height: 16px;
+  pointer-events: none;
+}
+.panel { position: relative; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="dot"></div>
+    LITECLAW<span style="color:var(--accent)">v2</span>
+  </div>
+  <div class="header-badge">AI Web Intelligence System</div>
+</header>
+
+<main>
+  <div class="hero">
+    <h1 class="hero-title">Web <span>Intelligence</span><br>Loop Engine</h1>
+    <p class="hero-sub">Scrape · Analyze · Interrogate · Loop</p>
+  </div>
+
+  <!-- SCRAPER PANEL -->
+  <div class="panel">
+    <div class="panel-head">
+      <div class="icon">🕷</div>
+      <div>
+        <h2>Analyse d'URL</h2>
+        <div class="sub">Entrez une URL pour démarrer la boucle d'intelligence</div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="input-row">
+        <input type="url" id="urlInput" placeholder="https://exemple.com/article..." value="">
+        <button class="btn btn-primary" id="scrapeBtn" onclick="startScrape()">
+          <span>◈</span> ANALYSER
+        </button>
+      </div>
+      <div id="statusBar"><div class="bar-fill" id="barFill"></div></div>
+    </div>
+  </div>
+
+  <!-- RESULT ZONE -->
+  <div id="resultZone">
+    <br>
+    <div class="result-card" id="mainCard">
+      <!-- Header -->
+      <div class="result-header">
+        <div>
+          <div style="font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">SOURCE ANALYSÉE</div>
+          <div class="url-badge" id="urlBadge"></div>
+        </div>
+      </div>
+
+      <!-- Topics -->
+      <div style="padding:14px 24px 0;" id="topicsRow">
+        <div class="topics" id="topicsList"></div>
+      </div>
+
+      <!-- Summary -->
+      <div class="summary-text" id="summaryText"></div>
+
+      <!-- Chat Thread -->
+      <div id="chatThread"></div>
+
+      <!-- Question Zone -->
+      <div class="q-zone" id="qZone">
+        <div class="q-label">Questions suggérées par l'IA</div>
+        <div class="q-grid" id="qGrid"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+let SESSION = null;
+let IS_LOADING = false;
+
+const urlInput   = document.getElementById('urlInput');
+const scrapeBtn  = document.getElementById('scrapeBtn');
+const statusBar  = document.getElementById('statusBar');
+const barFill    = document.getElementById('barFill');
+const resultZone = document.getElementById('resultZone');
+
+// ── Progress bar sim ─────────────────────────────────────────────────────────
+function startBar() {
+  statusBar.classList.add('active');
+  let w = 0;
+  const iv = setInterval(() => {
+    w += Math.random() * 12;
+    if (w >= 88) { clearInterval(iv); w = 88; }
+    barFill.style.width = w + '%';
+  }, 250);
+  return iv;
+}
+function endBar(iv) {
+  clearInterval(iv);
+  barFill.style.width = '100%';
+  setTimeout(() => { statusBar.classList.remove('active'); barFill.style.width = '0%'; }, 600);
+}
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+function showError(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = '⚠ ' + msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 4500);
+}
+
+// ── Render questions ─────────────────────────────────────────────────────────
+function renderQuestions(questions) {
+  const grid = document.getElementById('qGrid');
+  grid.innerHTML = '';
+  questions.forEach(q => {
+    const btn = document.createElement('button');
+    btn.className = 'q-btn';
+    btn.textContent = q;
+    btn.onclick = () => askQuestion(q);
+    grid.appendChild(btn);
+  });
+  document.getElementById('qZone').style.display = 'block';
+}
+
+// ── Disable all q-buttons while loading ─────────────────────────────────────
+function setQButtonsState(disabled) {
+  document.querySelectorAll('.q-btn').forEach(b => b.disabled = disabled);
+}
+
+// ── Add message to thread ────────────────────────────────────────────────────
+function addMessage(role, text) {
+  const thread = document.getElementById('chatThread');
+
+  // Remove thinking if present
+  const thinking = thread.querySelector('.thinking');
+  if (thinking) thinking.remove();
+
+  const div = document.createElement('div');
+  div.className = 'msg msg-' + role;
+  div.innerHTML = `
+    <div class="msg-label">${role === 'user' ? 'VOUS' : 'AI ANALYST'}</div>
+    <div class="msg-content">${escHtml(text)}</div>
+  `;
+  thread.appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function addThinking() {
+  const thread = document.getElementById('chatThread');
+  const div = document.createElement('div');
+  div.className = 'thinking';
+  div.innerHTML = `
+    <div class="thinking-dots"><span></span><span></span><span></span></div>
+    <span>Analyse en cours...</span>
+  `;
+  thread.appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+// ── START SCRAPE ─────────────────────────────────────────────────────────────
+async function startScrape() {
+  const url = urlInput.value.trim();
+  if (!url || !url.startsWith('http')) { showError('URL invalide'); return; }
+  if (IS_LOADING) return;
+
+  IS_LOADING = true;
+  scrapeBtn.disabled = true;
+  scrapeBtn.innerHTML = '<span>◌</span> SCRAPING...';
+  document.getElementById('chatThread').innerHTML = '';
+  document.getElementById('qGrid').innerHTML = '';
+  resultZone.style.display = 'none';
+
+  const iv = startBar();
+
+  try {
+    const res = await fetch('index.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'scrape', url })
+    });
+    const data = await res.json();
+    endBar(iv);
+
+    if (!data.ok) { showError(data.error || 'Erreur'); return; }
+
+    SESSION = data.session;
+
+    // Populate result zone
+    document.getElementById('urlBadge').textContent = data.url;
+
+    // Topics
+    const tl = document.getElementById('topicsList');
+    tl.innerHTML = '';
+    (data.topics || []).forEach(t => {
+      const s = document.createElement('span');
+      s.className = 'topic-tag';
+      s.textContent = t;
+      tl.appendChild(s);
+    });
+    document.getElementById('topicsRow').style.display = tl.children.length ? 'block' : 'none';
+
+    // Summary
+    document.getElementById('summaryText').textContent = data.summary;
+
+    // Show result zone
+    resultZone.style.display = 'block';
+
+    // Render questions
+    renderQuestions(data.questions || []);
+
+  } catch (e) {
+    endBar(iv);
+    showError('Erreur réseau : ' + e.message);
+  } finally {
+    IS_LOADING = false;
+    scrapeBtn.disabled = false;
+    scrapeBtn.innerHTML = '<span>◈</span> ANALYSER';
+  }
+}
+
+// ── ASK QUESTION ─────────────────────────────────────────────────────────────
+async function askQuestion(question) {
+  if (!SESSION || IS_LOADING) return;
+
+  IS_LOADING = true;
+  setQButtonsState(true);
+
+  addMessage('user', question);
+  addThinking();
+
+  try {
+    const res = await fetch('index.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'ask', session: SESSION, question })
+    });
+    const data = await res.json();
+
+    if (!data.ok) {
+      document.querySelector('.thinking')?.remove();
+      showError(data.error || 'Erreur');
+      return;
+    }
+
+    addMessage('ai', data.answer);
+    renderQuestions(data.questions || []);
+
+  } catch (e) {
+    document.querySelector('.thinking')?.remove();
+    showError('Erreur réseau : ' + e.message);
+  } finally {
+    IS_LOADING = false;
+    setQButtonsState(false);
+  }
+}
+
+// ── Enter key ────────────────────────────────────────────────────────────────
+urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') startScrape(); });
+</script>
+</body>
+</html>
