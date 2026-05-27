@@ -1,24 +1,62 @@
-# 🤖 IA Web Crawler & Conversational Agent
+<p align="center">
+  <img src="assets/libre-search-logo.png" alt="Libre Search" width="294">
+</p>
 
-Demo : https://liteclaw.web-4.art/phpv1/
+<p align="center">
+  <a href="https://hub.docker.com/r/liberchat/libre-search"><img src="https://img.shields.io/badge/docker-liberchat%2Flibre--search-e50914?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Hub"></a>
+  <img src="https://img.shields.io/badge/PHP-8.3-111111?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.3">
+  <img src="https://img.shields.io/badge/SQLite-persistent-8b0000?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite">
+  <img src="https://img.shields.io/badge/Mistral-ready-ff3b30?style=for-the-badge" alt="Mistral ready">
+</p>
 
-## 📑 Table des Matières
+# Libre Search
 
-1. [But du Site](#-but-du-site)
-2. [Architecture et Fonctionnement](#-architecture-et-fonctionnement)
-3. [Détail des Prompts](#-détail-des-prompts)
-4. [Mode Boucle : Génération de Questions par l'IA](#-mode-boucle--génération-de-questions-par-lia)
-5. [Méthode de Crawl](#-méthode-de-crawl)
-6. [Obtenir une API Key Mistral (Free Tier)](#-obtenir-une-api-key-mistral-free-tier)
-7. [Mode d'Emploi](#-mode-demploi)
-8. [Cas d'Usage](#-cas-dusage)
-9. [12 Modifications d'Optimisation Possibles](#-12-modifications-doptimisation-possibles)
-10. [Transformation en Analyseur SEO](#-transformation-en-analyseur-seo)
-11. [12 Cas Pratiques de Transformation](#-12-cas-pratiques-de-transformation)
+Agent conversationnel de recherche web : scrape, analyse et questions de suivi par IA.
+
+Au premier lancement, Libre Search demande une clé API Mistral dans l'interface de configuration. La clé est stockée localement dans `data/config.json` et n'est pas versionnée.
+
+## Installation Docker
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+L'application sera disponible sur `http://localhost:8080` ou sur votre domaine. Pour changer le port :
+
+```bash
+APP_PORT=8090 docker compose up -d
+```
+
+## Build et Push Docker Hub
+
+Connectez-vous puis indiquez l'image Docker Hub cible :
+
+```bash
+docker login
+DOCKERHUB_IMAGE=liberchat/libre-search:latest docker compose build
+DOCKERHUB_IMAGE=liberchat/libre-search:latest docker compose push
+```
+
+Le dossier `data/` est monté dans un volume Docker pour conserver la clé Mistral, l'historique et la base SQLite entre les redémarrages.
+
+## Table des Matières
+
+1. [But du Site](#but-du-site)
+2. [Architecture et Fonctionnement](#architecture-et-fonctionnement)
+3. [Détail des Prompts](#détail-des-prompts)
+4. [Mode Boucle : Génération de Questions par l'IA](#mode-boucle--génération-de-questions-par-lia)
+5. [Méthode de Crawl](#méthode-de-crawl)
+6. [Obtenir une API Key Mistral (Free Tier)](#obtenir-api-key-free-tier-mistral)
+7. [Mode d'Emploi](#mode-demploi)
+8. [Cas d'Usage](#cas-dusage)
+9. [12 Modifications d'Optimisation Possibles](#12-modifications-doptimisation-possibles)
+10. [Transformation en Analyseur SEO](#transformation-en-analyseur-seo)
+11. [12 Cas Pratiques de Transformation](#12-cas-pratiques-de-transformation)
 
 ---
 
-## 🎯 But du Site
+## But du Site
 
 Ce projet a pour objectif de créer un **agent conversationnel intelligent capable d'explorer le web**, d'extraire des informations pertinentes à partir d'une URL donnée, et d'engager un dialogue contextuel avec l'utilisateur basé sur le contenu analysé.
 
@@ -36,7 +74,7 @@ Ce projet a pour objectif de créer un **agent conversationnel intelligent capab
 
 ---
 
-## 🏗️ Architecture et Fonctionnement
+## Architecture et Fonctionnement
 
 Le système repose sur une architecture simple mais puissante en trois blocs :
 
@@ -59,7 +97,7 @@ graph TD
 
 ---
 
-## 📝 Détail des Prompts
+## Détail des Prompts
 
 La qualité des réponses dépend entièrement de la précision des prompts (instructions données à l'IA). Voici la structure détaillée utilisée dans ce projet.
 
@@ -78,7 +116,7 @@ RÈGLES STRICTES :
 5. Format de sortie attendu :
    - [Ta réponse détaillée]
    - ---
-   - 💡 Question suggérée : [La question]
+   - Question suggérée : [La question]
 ```
 
 ### 2. Prompt Utilisateur (User Prompt)
@@ -109,7 +147,7 @@ Texte : {CONTENU_BRUT}
 
 ---
 
-## 🔄 Mode Boucle : Génération de Questions par l'IA
+## Mode Boucle : Génération de Questions par l'IA
 
 Le "Mode Boucle" est la fonctionnalité clé qui transforme une simple recherche en une exploration guidée. Au lieu d'attendre passivement la prochaine requête, l'IA devient proactive.
 
@@ -153,14 +191,14 @@ Le "Mode Boucle" est la fonctionnalité clé qui transforme une simple recherche
 *   **URL** : Article sur le réchauffement climatique.
 *   **User** : "Quelles sont les causes principales ?"
 *   **IA** : "Les causes principales sont l'émission de CO2, la déforestation..."
-    *   *Suggestion IA* : "💡 Voulez-vous connaître l'impact précis de la déforestation en Amazonie mentionné dans l'article ?"
+    *   *Suggestion IA* : "Voulez-vous connaître l'impact précis de la déforestation en Amazonie mentionné dans l'article ?"
 *   **User** : (Clique sur la suggestion)
 *   **IA** : "Selon l'article, la déforestation en Amazonie représente 15% des émissions globales..."
-    *   *Suggestion IA* : "💡 Quelles solutions proposées par l'auteur pour inverser cette tendance ?"
+    *   *Suggestion IA* : "Quelles solutions proposées par l'auteur pour inverser cette tendance ?"
 
 ---
 
-## 🕷️ Méthode de Crawl
+## Méthode de Crawl
 
 Pour garantir la compatibilité et la simplicité, nous utilisons une méthode de crawl "léger" basée sur les fonctions natives de récupération de contenu, suivie d'un nettoyage agressif pour ne garder que le texte lisible par l'IA.
 
@@ -219,7 +257,7 @@ $text = substr($text, 0, 15000);
 
 ---
 
-## 🔑 Obtenir API Key Free Tier Mistral
+## Obtenir API Key Free Tier Mistral
 
 Mistral AI offre un niveau gratuit généreux pour tester leurs modèles, parfait pour ce type de projet.
 
@@ -237,7 +275,7 @@ Mistral AI offre un niveau gratuit généreux pour tester leurs modèles, parfai
     *   Cliquez sur le bouton **"Create new key"**.
     *   Donnez-lui un nom explicite (ex: `Projet-Crawler-Web`).
     *   Copiez immédiatement la clé générée (elle commence par `sk-...`).
-    *   ⚠️ **Attention** : Elle ne sera affichée qu'une seule fois.
+    *   **Attention** : Elle ne sera affichée qu'une seule fois.
 
 4.  **Vérifier le plan Gratuit (Free Tier)**
     *   Allez dans la section **"Billing"** ou **"Usage"**.
@@ -251,7 +289,7 @@ Mistral AI offre un niveau gratuit généreux pour tester leurs modèles, parfai
 
 ---
 
-## 🛠️ Mode d'Emploi
+## Mode d'Emploi
 
 Voici comment installer et lancer le projet sur votre machine locale.
 
@@ -303,7 +341,7 @@ Voici comment installer et lancer le projet sur votre machine locale.
 
 ---
 
-## 💡 Cas d'Usage
+## Cas d'Usage
 
 Ce outil est polyvalent et s'adapte à de nombreux scénarios professionnels et personnels.
 

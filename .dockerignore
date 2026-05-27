@@ -1,0 +1,8 @@
+.git
+data
+*.sqlite
+*.log
+.env
+Capture*.png
+Dockerfile
+docker-compose.yml

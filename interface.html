@@ -3,25 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LITECLAW v2 — AI Web Intelligence</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Libre Search — Web Intelligence</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/orbitron@5/400.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/orbitron@5/600.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/orbitron@5/800.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/orbitron@5/900.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/space-mono@5/400.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/space-mono@5/700.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5/300.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5/400.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5/500.css" rel="stylesheet">
 <style>
 :root {
-  --white:   #ffffff;
-  --off:     #f4f6fa;
-  --grid:    #e8ecf4;
-  --ink:     #0a0e1a;
-  --ink2:    #1e2540;
-  --muted:   #7a859e;
-  --accent:  #0066ff;
-  --accent2: #00d4ff;
-  --accent3: #6600ff;
-  --ok:      #00c896;
-  --warn:    #ff4444;
-  --border:  rgba(0,102,255,0.18);
-  --glow:    0 0 30px rgba(0,102,255,0.12);
-  --shadow:  0 4px 32px rgba(10,14,26,0.08);
+  --white:   #111111;
+  --off:     #050505;
+  --grid:    #2a0c0c;
+  --ink:     #f7f2f2;
+  --ink2:    #eadada;
+  --muted:   #9d8585;
+  --accent:  #e50914;
+  --accent2: #ff3b30;
+  --accent3: #8b0000;
+  --ok:      #ff5a66;
+  --warn:    #ff1744;
+  --border:  rgba(229,9,20,0.28);
+  --glow:    0 0 30px rgba(229,9,20,0.18);
+  --shadow:  0 18px 50px rgba(0,0,0,0.45);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,8 +48,8 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0,102,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,102,255,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(229,9,20,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(229,9,20,0.08) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
@@ -50,7 +58,7 @@ body::before {
 /* ── HEADER ── */
 header {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(255,255,255,0.9);
+  background: rgba(8,8,8,0.92);
   backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border);
   padding: 0 40px;
@@ -149,8 +157,50 @@ main {
 }
 .input-row input[type=url]:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(0,102,255,0.1);
+  box-shadow: 0 0 0 3px rgba(229,9,20,0.16);
   background: var(--white);
+}
+
+.tools-row {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.toggle {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--ink2);
+  font-size: 0.75rem;
+  cursor: pointer;
+  background: rgba(229,9,20,0.06);
+}
+.toggle input { accent-color: var(--accent); }
+.mini-btn {
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink2);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.mini-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.mini-btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 /* ── BUTTONS ── */
@@ -172,9 +222,9 @@ main {
 .btn-primary {
   background: linear-gradient(135deg, var(--accent), var(--accent3));
   color: var(--white);
-  box-shadow: 0 4px 20px rgba(0,102,255,0.3);
+  box-shadow: 0 4px 20px rgba(229,9,20,0.35);
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,102,255,0.4); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(229,9,20,0.45); }
 .btn-primary:active { transform: translateY(0); }
 .btn-primary:disabled { opacity: 0.45; pointer-events: none; }
 
@@ -213,7 +263,7 @@ main {
 
 .result-header {
   padding: 16px 24px;
-  background: linear-gradient(135deg, rgba(0,102,255,0.04), rgba(0,212,255,0.04));
+  background: linear-gradient(135deg, rgba(229,9,20,0.1), rgba(255,59,48,0.08));
   border-bottom: 1px solid var(--grid);
   display: flex; align-items: center; gap: 10px;
 }
@@ -221,7 +271,7 @@ main {
   font-family: 'Space Mono', monospace;
   font-size: 0.7rem;
   color: var(--accent);
-  background: rgba(0,102,255,0.07);
+  background: rgba(229,9,20,0.12);
   padding: 4px 12px;
   border-radius: 6px;
   word-break: break-all;
@@ -233,8 +283,8 @@ main {
   font-family: 'Space Mono', monospace;
   font-size: 0.65rem;
   color: var(--accent3);
-  background: rgba(102,0,255,0.07);
-  border: 1px solid rgba(102,0,255,0.15);
+  background: rgba(139,0,0,0.2);
+  border: 1px solid rgba(229,9,20,0.24);
   padding: 4px 10px;
   border-radius: 20px;
   letter-spacing: 0.05em;
@@ -249,6 +299,48 @@ main {
   border-bottom: 1px solid var(--grid);
 }
 
+.source-panel {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--grid);
+}
+.source-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.source-list,
+.citation-list {
+  display: grid;
+  gap: 8px;
+}
+.source-item,
+.citation-item {
+  border: 1px solid var(--grid);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(0,0,0,0.18);
+  color: var(--ink2);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  word-break: break-word;
+}
+.source-item {
+  font-family: 'Space Mono', monospace;
+  color: var(--accent2);
+}
+.citation-url {
+  display: block;
+  margin-top: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+
 /* ── CHAT THREAD ── */
 #chatThread {
   padding: 0;
@@ -259,7 +351,7 @@ main {
   animation: slideUp 0.25s ease;
 }
 .msg-user {
-  background: rgba(0,102,255,0.03);
+  background: rgba(229,9,20,0.08);
 }
 .msg-ai {
   background: var(--white);
@@ -291,11 +383,14 @@ main {
   white-space: pre-wrap;
   word-break: break-word;
 }
+.msg-citations {
+  margin-top: 12px;
+}
 
 /* ── QUESTION BUTTONS ── */
 .q-zone {
   padding: 18px 24px 20px;
-  background: linear-gradient(180deg, rgba(0,102,255,0.02), var(--off));
+  background: linear-gradient(180deg, rgba(229,9,20,0.07), var(--off));
   border-top: 1px solid var(--grid);
 }
 .q-label {
@@ -349,7 +444,7 @@ main {
 .q-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
-  box-shadow: 0 4px 16px rgba(0,102,255,0.1);
+  box-shadow: 0 4px 16px rgba(229,9,20,0.18);
   transform: translateY(-2px);
 }
 .q-btn:hover::before { opacity: 1; }
@@ -389,6 +484,127 @@ main {
   box-shadow: 0 8px 30px rgba(0,0,0,0.25);
   animation: slideUp 0.3s ease;
   max-width: 360px;
+}
+
+/* ── HISTORY ── */
+.history-panel {
+  margin-top: 18px;
+  display: none;
+}
+.history-list {
+  display: grid;
+  gap: 8px;
+}
+.history-item {
+  width: 100%;
+  border: 1px solid var(--grid);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: var(--white);
+  color: var(--ink2);
+  text-align: left;
+  cursor: pointer;
+}
+.history-item:hover {
+  border-color: var(--accent);
+}
+.history-url {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--accent2);
+  word-break: break-word;
+}
+.history-meta {
+  margin-top: 5px;
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+.history-summary {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--ink2);
+}
+
+/* ── CONFIGURATION ── */
+.setup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0,0,0,0.76);
+  backdrop-filter: blur(14px);
+}
+.setup-overlay.active { display: flex; }
+.setup-card {
+  width: min(520px, 100%);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #0d0d0d;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.setup-head {
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid var(--grid);
+}
+.setup-head h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.92rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.setup-head p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+.setup-body {
+  padding: 22px 24px 24px;
+}
+.setup-body label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.setup-body input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border: 1.5px solid var(--grid);
+  border-radius: 10px;
+  background: var(--off);
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  outline: none;
+}
+.setup-body input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(229,9,20,0.16);
+}
+.setup-actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+@media print {
+  header, .panel, .q-zone, .toast, .setup-overlay { display: none !important; }
+  body { background: #fff; color: #111; }
+  main { max-width: none; padding: 0; }
+  .hero { padding-bottom: 18px; }
+  .result-card { box-shadow: none; border-color: #ddd; }
+  .result-card::after { display: none; }
 }
 
 /* ── SCAN LINES effect on result ── */
@@ -441,24 +657,43 @@ main {
 </head>
 <body>
 
+<div class="setup-overlay" id="setupOverlay">
+  <div class="setup-card">
+    <div class="setup-head">
+      <h2>Configuration initiale</h2>
+      <p>Ajoutez votre clé API Mistral pour activer les analyses IA. Elle sera enregistrée localement sur le serveur dans le dossier data.</p>
+    </div>
+    <div class="setup-body">
+      <label for="mistralKeyInput">Clé API Mistral</label>
+      <input type="password" id="mistralKeyInput" placeholder="Collez votre clé API ici" autocomplete="off">
+      <div class="setup-actions">
+        <button class="mini-btn" id="configCloseBtn" onclick="closeConfig()">FERMER</button>
+        <button class="btn btn-primary" id="saveConfigBtn" onclick="saveConfig()">
+          <span>◈</span> ENREGISTRER
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <header>
   <div class="logo">
     <div class="dot"></div>
-    LITECLAW<span style="color:var(--accent)">v2</span>
+    LIBRE<span style="color:var(--accent)">SEARCH</span>
   </div>
-  <div class="header-badge">AI Web Intelligence System</div>
+  <div class="header-badge">Libre Web Intelligence</div>
 </header>
 
 <main>
   <div class="hero">
-    <h1 class="hero-title">Web <span>Intelligence</span><br>Loop Engine</h1>
+    <h1 class="hero-title">Libre <span>Search</span><br>Loop Engine</h1>
     <p class="hero-sub">Scrape · Analyze · Interrogate · Loop</p>
   </div>
 
   <!-- SCRAPER PANEL -->
   <div class="panel">
     <div class="panel-head">
-      <div class="icon">🕷</div>
+      <div class="icon">URL</div>
       <div>
         <h2>Analyse d'URL</h2>
         <div class="sub">Entrez une URL pour démarrer la boucle d'intelligence</div>
@@ -471,7 +706,30 @@ main {
           <span>◈</span> ANALYSER
         </button>
       </div>
+      <div class="tools-row">
+        <label class="toggle">
+          <input type="checkbox" id="multiPageToggle">
+          Recherche multi-pages
+        </label>
+        <button class="mini-btn" onclick="toggleHistory()">HISTORIQUE</button>
+        <button class="mini-btn" onclick="openConfig(false)">CONFIG</button>
+        <button class="mini-btn export-btn" onclick="exportMarkdown()" disabled>EXPORT MD</button>
+        <button class="mini-btn export-btn" onclick="exportPdf()" disabled>EXPORT PDF</button>
+      </div>
       <div id="statusBar"><div class="bar-fill" id="barFill"></div></div>
+    </div>
+  </div>
+
+  <div class="panel history-panel" id="historyPanel">
+    <div class="panel-head">
+      <div class="icon">HIS</div>
+      <div>
+        <h2>Historique public</h2>
+        <div class="sub">Dernières URLs analysées et sessions consultables</div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="history-list" id="historyList"></div>
     </div>
   </div>
 
@@ -495,6 +753,14 @@ main {
       <!-- Summary -->
       <div class="summary-text" id="summaryText"></div>
 
+      <!-- Sources and Citations -->
+      <div class="source-panel" id="sourcePanel">
+        <div class="source-title">Sources crawlées</div>
+        <div class="source-list" id="sourceList"></div>
+        <div class="source-title" style="margin-top:14px;">Extraits justificatifs</div>
+        <div class="citation-list" id="summaryCitations"></div>
+      </div>
+
       <!-- Chat Thread -->
       <div id="chatThread"></div>
 
@@ -510,12 +776,19 @@ main {
 <script>
 let SESSION = null;
 let IS_LOADING = false;
+let CURRENT = null;
+let APP_CONFIGURED = false;
 
-const urlInput   = document.getElementById('urlInput');
-const scrapeBtn  = document.getElementById('scrapeBtn');
-const statusBar  = document.getElementById('statusBar');
-const barFill    = document.getElementById('barFill');
-const resultZone = document.getElementById('resultZone');
+const urlInput        = document.getElementById('urlInput');
+const scrapeBtn       = document.getElementById('scrapeBtn');
+const statusBar       = document.getElementById('statusBar');
+const barFill         = document.getElementById('barFill');
+const resultZone      = document.getElementById('resultZone');
+const multiPageToggle = document.getElementById('multiPageToggle');
+const setupOverlay    = document.getElementById('setupOverlay');
+const mistralKeyInput = document.getElementById('mistralKeyInput');
+const saveConfigBtn   = document.getElementById('saveConfigBtn');
+const configCloseBtn  = document.getElementById('configCloseBtn');
 
 // ── Progress bar sim ─────────────────────────────────────────────────────────
 function startBar() {
@@ -538,9 +811,71 @@ function endBar(iv) {
 function showError(msg) {
   const t = document.createElement('div');
   t.className = 'toast';
-  t.textContent = '⚠ ' + msg;
+  t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 4500);
+}
+
+function setExportState(enabled) {
+  document.querySelectorAll('.export-btn').forEach(btn => btn.disabled = !enabled);
+}
+
+function setSearchState(enabled) {
+  urlInput.disabled = !enabled;
+  scrapeBtn.disabled = !enabled;
+  multiPageToggle.disabled = !enabled;
+}
+
+function openConfig(required = false) {
+  setupOverlay.classList.add('active');
+  configCloseBtn.style.display = required ? 'none' : 'inline-flex';
+  setTimeout(() => mistralKeyInput.focus(), 50);
+}
+
+function closeConfig() {
+  if (!APP_CONFIGURED) {
+    showError('Ajoutez une clé API Mistral pour démarrer');
+    return;
+  }
+  setupOverlay.classList.remove('active');
+  mistralKeyInput.value = '';
+}
+
+async function checkConfig() {
+  try {
+    const data = await postJson({ action: 'config_status' });
+    APP_CONFIGURED = !!data.configured;
+    setSearchState(APP_CONFIGURED);
+    if (!APP_CONFIGURED) {
+      openConfig(true);
+    }
+  } catch (e) {
+    setSearchState(false);
+    showError('Configuration indisponible : ' + e.message);
+  }
+}
+
+async function saveConfig() {
+  const key = mistralKeyInput.value.trim();
+  if (key.length < 8) {
+    showError('Clé API Mistral invalide');
+    return;
+  }
+  saveConfigBtn.disabled = true;
+  saveConfigBtn.innerHTML = '<span>◌</span> ENREGISTREMENT...';
+  try {
+    const data = await postJson({ action: 'save_config', mistral_key: key });
+    if (!data.ok) { showError(data.error || 'Configuration refusée'); return; }
+    APP_CONFIGURED = true;
+    setSearchState(true);
+    closeConfig();
+    showError('Configuration enregistrée');
+  } catch (e) {
+    showError('Erreur configuration : ' + e.message);
+  } finally {
+    saveConfigBtn.disabled = false;
+    saveConfigBtn.innerHTML = '<span>◈</span> ENREGISTRER';
+  }
 }
 
 // ── Render questions ─────────────────────────────────────────────────────────
@@ -557,13 +892,41 @@ function renderQuestions(questions) {
   document.getElementById('qZone').style.display = 'block';
 }
 
+function renderSources(sources) {
+  const list = document.getElementById('sourceList');
+  list.innerHTML = '';
+  (sources || []).forEach((source, index) => {
+    const div = document.createElement('div');
+    div.className = 'source-item';
+    div.textContent = `${index + 1}. ${source.url}`;
+    list.appendChild(div);
+  });
+  document.getElementById('sourcePanel').style.display = list.children.length ? 'block' : 'none';
+}
+
+function renderCitationList(target, citations) {
+  target.innerHTML = '';
+  (citations || []).forEach(citation => {
+    const div = document.createElement('div');
+    div.className = 'citation-item';
+    div.innerHTML = `${escHtml(citation.excerpt || '')}<span class="citation-url">${escHtml(citation.url || '')}</span>`;
+    target.appendChild(div);
+  });
+  if (!target.children.length) {
+    const empty = document.createElement('div');
+    empty.className = 'citation-item';
+    empty.textContent = 'Aucun extrait précis disponible pour cette réponse.';
+    target.appendChild(empty);
+  }
+}
+
 // ── Disable all q-buttons while loading ─────────────────────────────────────
 function setQButtonsState(disabled) {
   document.querySelectorAll('.q-btn').forEach(b => b.disabled = disabled);
 }
 
 // ── Add message to thread ────────────────────────────────────────────────────
-function addMessage(role, text) {
+function addMessage(role, text, citations = [], record = true) {
   const thread = document.getElementById('chatThread');
 
   // Remove thinking if present
@@ -576,7 +939,16 @@ function addMessage(role, text) {
     <div class="msg-label">${role === 'user' ? 'VOUS' : 'AI ANALYST'}</div>
     <div class="msg-content">${escHtml(text)}</div>
   `;
+  if (role === 'ai') {
+    const citationWrap = document.createElement('div');
+    citationWrap.className = 'msg-citations citation-list';
+    renderCitationList(citationWrap, citations);
+    div.appendChild(citationWrap);
+  }
   thread.appendChild(div);
+  if (record && CURRENT) {
+    CURRENT.messages.push({ role: role === 'ai' ? 'assistant' : role, content: text, citations });
+  }
   div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -593,12 +965,67 @@ function addThinking() {
 }
 
 function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+function renderAnalysis(data) {
+  SESSION = data.session;
+  CURRENT = {
+    url: data.url,
+    summary: data.summary || '',
+    topics: data.topics || [],
+    questions: data.questions || [],
+    sources: data.sources || [],
+    citations: data.citations || [],
+    crawlMode: data.crawl_mode || 'single',
+    pageCount: data.page_count || (data.sources || []).length || 1,
+    createdAt: data.created_at || new Date().toISOString(),
+    messages: []
+  };
+
+  document.getElementById('chatThread').innerHTML = '';
+  document.getElementById('urlBadge').textContent = `${data.url} · ${CURRENT.pageCount} page${CURRENT.pageCount > 1 ? 's' : ''}`;
+
+  const tl = document.getElementById('topicsList');
+  tl.innerHTML = '';
+  CURRENT.topics.forEach(t => {
+    const s = document.createElement('span');
+    s.className = 'topic-tag';
+    s.textContent = t;
+    tl.appendChild(s);
+  });
+  document.getElementById('topicsRow').style.display = tl.children.length ? 'block' : 'none';
+
+  document.getElementById('summaryText').textContent = CURRENT.summary;
+  renderSources(CURRENT.sources);
+  renderCitationList(document.getElementById('summaryCitations'), CURRENT.citations);
+  resultZone.style.display = 'block';
+  renderQuestions(CURRENT.questions);
+  setExportState(true);
+
+  (data.messages || []).forEach(message => {
+    if (message.role === 'user') {
+      addMessage('user', message.content || '', [], false);
+    } else if (message.role === 'assistant') {
+      addMessage('ai', message.content || '', message.citations || [], false);
+    }
+  });
+  CURRENT.messages = data.messages || [];
+}
+
+async function postJson(payload) {
+  const res = await fetch('index.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  return res.json();
 }
 
 // ── START SCRAPE ─────────────────────────────────────────────────────────────
 async function startScrape() {
   const url = urlInput.value.trim();
+  if (!APP_CONFIGURED) { openConfig(true); return; }
   if (!url || !url.startsWith('http')) { showError('URL invalide'); return; }
   if (IS_LOADING) return;
 
@@ -608,44 +1035,18 @@ async function startScrape() {
   document.getElementById('chatThread').innerHTML = '';
   document.getElementById('qGrid').innerHTML = '';
   resultZone.style.display = 'none';
+  setExportState(false);
 
   const iv = startBar();
 
   try {
-    const res = await fetch('index.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'scrape', url })
-    });
-    const data = await res.json();
+    const data = await postJson({ action: 'scrape', url, multiPage: multiPageToggle.checked });
     endBar(iv);
 
     if (!data.ok) { showError(data.error || 'Erreur'); return; }
 
-    SESSION = data.session;
-
-    // Populate result zone
-    document.getElementById('urlBadge').textContent = data.url;
-
-    // Topics
-    const tl = document.getElementById('topicsList');
-    tl.innerHTML = '';
-    (data.topics || []).forEach(t => {
-      const s = document.createElement('span');
-      s.className = 'topic-tag';
-      s.textContent = t;
-      tl.appendChild(s);
-    });
-    document.getElementById('topicsRow').style.display = tl.children.length ? 'block' : 'none';
-
-    // Summary
-    document.getElementById('summaryText').textContent = data.summary;
-
-    // Show result zone
-    resultZone.style.display = 'block';
-
-    // Render questions
-    renderQuestions(data.questions || []);
+    renderAnalysis(data);
+    loadHistory(false);
 
   } catch (e) {
     endBar(iv);
@@ -668,12 +1069,7 @@ async function askQuestion(question) {
   addThinking();
 
   try {
-    const res = await fetch('index.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'ask', session: SESSION, question })
-    });
-    const data = await res.json();
+    const data = await postJson({ action: 'ask', session: SESSION, question });
 
     if (!data.ok) {
       document.querySelector('.thinking')?.remove();
@@ -681,8 +1077,9 @@ async function askQuestion(question) {
       return;
     }
 
-    addMessage('ai', data.answer);
+    addMessage('ai', data.answer, data.citations || []);
     renderQuestions(data.questions || []);
+    if (CURRENT) CURRENT.questions = data.questions || [];
 
   } catch (e) {
     document.querySelector('.thinking')?.remove();
@@ -693,8 +1090,113 @@ async function askQuestion(question) {
   }
 }
 
+async function toggleHistory() {
+  const panel = document.getElementById('historyPanel');
+  const visible = panel.style.display === 'block';
+  panel.style.display = visible ? 'none' : 'block';
+  if (!visible) await loadHistory(true);
+}
+
+async function loadHistory(showErrors = true) {
+  const panel = document.getElementById('historyPanel');
+  const list = document.getElementById('historyList');
+  if (panel.style.display !== 'block' && showErrors) panel.style.display = 'block';
+
+  try {
+    const data = await postJson({ action: 'history' });
+    if (!data.ok) { if (showErrors) showError(data.error || 'Historique indisponible'); return; }
+    list.innerHTML = '';
+    (data.items || []).forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'history-item';
+      const date = item.updated_at ? new Date(item.updated_at.replace(' ', 'T')).toLocaleString('fr-FR') : '';
+      btn.innerHTML = `
+        <div class="history-url">${escHtml(item.url)}</div>
+        <div class="history-meta">${escHtml(date)} · ${escHtml(item.crawl_mode || 'single')} · ${Number(item.page_count || 1)} page${Number(item.page_count || 1) > 1 ? 's' : ''}</div>
+        <div class="history-summary">${escHtml((item.summary || '').slice(0, 220))}</div>
+      `;
+      btn.onclick = () => openHistorySession(item.session_key);
+      list.appendChild(btn);
+    });
+    if (!list.children.length) {
+      const empty = document.createElement('div');
+      empty.className = 'history-item';
+      empty.textContent = 'Aucune recherche enregistrée pour le moment.';
+      list.appendChild(empty);
+    }
+  } catch (e) {
+    if (showErrors) showError('Historique indisponible : ' + e.message);
+  }
+}
+
+async function openHistorySession(session) {
+  if (IS_LOADING) return;
+  IS_LOADING = true;
+  const iv = startBar();
+  try {
+    const data = await postJson({ action: 'get_session', session });
+    endBar(iv);
+    if (!data.ok) { showError(data.error || 'Session introuvable'); return; }
+    renderAnalysis(data);
+    document.getElementById('historyPanel').style.display = 'none';
+  } catch (e) {
+    endBar(iv);
+    showError('Session indisponible : ' + e.message);
+  } finally {
+    IS_LOADING = false;
+  }
+}
+
+function exportMarkdown() {
+  if (!CURRENT) return;
+  const lines = [
+    '# Libre Search',
+    '',
+    `URL: ${CURRENT.url}`,
+    `Date: ${new Date(CURRENT.createdAt).toLocaleString('fr-FR')}`,
+    `Mode: ${CURRENT.crawlMode} (${CURRENT.pageCount} page${CURRENT.pageCount > 1 ? 's' : ''})`,
+    '',
+    '## Resume',
+    '',
+    CURRENT.summary,
+    '',
+    '## Sujets',
+    '',
+    ...(CURRENT.topics.length ? CURRENT.topics.map(t => `- ${t}`) : ['- Aucun sujet extrait']),
+    '',
+    '## Sources',
+    '',
+    ...(CURRENT.sources.length ? CURRENT.sources.map((s, i) => `${i + 1}. ${s.url}`) : ['Aucune source disponible']),
+    '',
+    '## Extraits justificatifs',
+    '',
+    ...(CURRENT.citations.length ? CURRENT.citations.map(c => `> ${c.excerpt}\n>\n> Source: ${c.url}`) : ['Aucun extrait disponible']),
+    '',
+    '## Conversation',
+    ''
+  ];
+  CURRENT.messages.forEach(message => {
+    lines.push(`### ${message.role === 'user' ? 'Vous' : 'Libre Search'}`, '', message.content || '', '');
+    (message.citations || []).forEach(c => lines.push(`> ${c.excerpt}`, `> Source: ${c.url}`, ''));
+  });
+  const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'libre-search-export.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function exportPdf() {
+  if (!CURRENT) return;
+  window.print();
+}
+
 // ── Enter key ────────────────────────────────────────────────────────────────
 urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') startScrape(); });
+mistralKeyInput.addEventListener('keydown', e => { if (e.key === 'Enter') saveConfig(); });
+checkConfig();
+loadHistory(false);
 </script>
 </body>
 </html>
