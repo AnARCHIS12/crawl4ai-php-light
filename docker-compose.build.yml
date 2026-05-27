@@ -1,0 +1,5 @@
+services:
+  libre-search:
+    build:
+      context: .
+      dockerfile: Dockerfile

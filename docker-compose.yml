@@ -1,9 +1,6 @@
 services:
   libre-search:
-    image: ${DOCKERHUB_IMAGE:-libre-search:latest}
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${DOCKERHUB_IMAGE:-liberchat/libre-search:latest}
     ports:
       - "${APP_PORT:-8080}:80"
     volumes:

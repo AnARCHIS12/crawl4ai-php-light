@@ -20,7 +20,6 @@ Au premier lancement, Libre Search demande une clé API Mistral dans l'interface
 ## Installation Docker
 
 ```bash
-docker compose build
 docker compose up -d
 ```
 
@@ -36,7 +35,7 @@ Connectez-vous puis indiquez l'image Docker Hub cible :
 
 ```bash
 docker login
-DOCKERHUB_IMAGE=liberchat/libre-search:latest docker compose build
+DOCKERHUB_IMAGE=liberchat/libre-search:latest docker compose -f docker-compose.yml -f docker-compose.build.yml build
 DOCKERHUB_IMAGE=liberchat/libre-search:latest docker compose push
 ```
 
