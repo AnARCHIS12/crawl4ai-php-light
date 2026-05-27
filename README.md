@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/Mistral-ready-ff3b30?style=for-the-badge" alt="Mistral ready">
 </p>
 
-# Libre Search
+
 
 Merci à [LaurentVoanh](https://github.com/LaurentVoanh) pour ce projet génial.
 
