@@ -11,6 +11,8 @@
 
 # Libre Search
 
+Merci à [LaurentVoanh](https://github.com/LaurentVoanh) pour ce projet génial.
+
 Agent conversationnel de recherche web : scrape, analyse et questions de suivi par IA.
 
 Au premier lancement, Libre Search demande une clé API Mistral dans l'interface de configuration. La clé est stockée localement dans `data/config.json` et n'est pas versionnée.
